@@ -1,8 +1,5 @@
 
-// Example module that runs fastqc on a single fastq file.
-// Results are publushed to the study directory in the fastqc directory
-
-process FASTQC {
+process MUDSKIPPER {
 
     tag 'medium'
 
