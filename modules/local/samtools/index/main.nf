@@ -3,11 +3,11 @@ process SAMTOOLS_INDEX {
     tag 'medium'
 
 	input:
-	    file bam 
+	    path(bam) 
 
 	output:
-	    path("*.bai"), emit: bai
-        path("*.bam", includeInputs: true), emit: bam
+	    path('*.bai'), emit: bai
+        path('*.bam', includeInputs: true)
 
     script:
         """

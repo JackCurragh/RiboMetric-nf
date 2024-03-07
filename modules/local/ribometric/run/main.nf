@@ -5,7 +5,8 @@ process RIBOMETRIC_RUN {
 	publishDir "${params.output_dir}/ribometric/${bam.baseName}", mode: 'copy'
 	
 	input:
-	    tuple(bam, bai) 
+        path(bai) 
+	    path(bam)
         file annotation
 
 	output:
@@ -16,6 +17,6 @@ process RIBOMETRIC_RUN {
 
     script:
         """
-        RiboMetric run -b ${bam} -a ${annotation} -S 10000000 -T 10000 --all
+        RiboMetric run -b ${bam} -a ${annotation} -S 10000000 -T 10000 --all > output.txt
         """
 }

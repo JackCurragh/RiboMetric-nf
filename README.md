@@ -52,3 +52,9 @@ Example
 bash scripts/run-w-frills example_parameters.yml standard
 ```
 
+
+ 11     samtools index $file
+ 12     mudskipper bulk --alignment ${file} --out ${file}.trans.bam --index $MUD
+ 13     samtools sort ${file}.trans.bam -o ${file}.trans.bam
+ 14     samtools index ${file}.trans.bam
+ 15     RiboMetric run -b ${file}.trans.bam -a $RiboMetric -o $dir --all

@@ -10,6 +10,6 @@ process SAMTOOLS_VIEW_NO_SECONDARY {
 
     script:
         """
-        samtools view -F 256 -b ${bam} > ${no_secondary_bam}
+        samtools view -F 256 -b ${bam} > ${bam.baseName}.no_secondary.bam
         """
 }

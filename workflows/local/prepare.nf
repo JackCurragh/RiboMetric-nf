@@ -3,8 +3,8 @@
 // if an organisms mudskipper index and ribometric annotation 
 // are not found on drive then it will be prepared 
 
-include { RIBOMETRIC_PREPARE } from '../../modules/ribometric/prepare/main.nf'
-include { MUDSKIPPER_INDEX } from '../../modules/mudskipper/index/main.nf'
+include { RIBOMETRIC_PREPARE } from '../../modules/local/ribometric/prepare/main.nf'
+include { MUDSKIPPER_INDEX } from '../../modules/local/mudskipper/index/main.nf'
 
 workflow prepare {
     take:

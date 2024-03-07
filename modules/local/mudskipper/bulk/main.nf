@@ -4,15 +4,15 @@ process MUDSKIPPER_BULK {
     tag 'medium'
 
 	input:
-	    file bam 
-        file bam_index
-        path index
+        path(bam_index)
+	    path(bam)
+        val(index)
 
 	output:
 	    path "*.trans.bam", emit: trans_bam
 
     script:
         """
-        mudskipper bulk --alignment ${bam} --out ${file.baseName}.trans.bam --index $index
+        mudskipper bulk --alignment ${bam} --out ${bam.baseName}.trans.bam --index $index
         """
 }

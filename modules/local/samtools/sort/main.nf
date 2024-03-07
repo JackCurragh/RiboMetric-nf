@@ -10,6 +10,6 @@ process SAMTOOLS_SORT {
 
     script:
         """
-        samtools sort ${bam} -o ${sorted_bam} 
+        samtools sort ${bam} -o ${bam.baseName}.sorted.bam 
         """
 }

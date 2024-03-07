@@ -4,9 +4,10 @@
 nextflow.enable.dsl=2
 
 /// Import modules and subworkflows
-include { quality_control } from './subworkflows/local/quality_control.nf'
-include { prepare } from './subworkflows/local/prepare.nf'
-include { genomic_ribometric } from './subworkflows/local/genomic.nf'
+include { prepare } from './workflows/local/prepare.nf'
+include { genomic_ribometric } from './workflows/local/genomic.nf'
+
+include { GET_REFS } from './modules/local/utilities/get_refs.nf'
 
 // Log the parameters
 log.info """\
@@ -44,9 +45,18 @@ workflow {
     samples = Channel
                 .fromPath(params.input_csv)
                 .splitCsv(header: true)
-                .map { row -> tuple(organism_name, bam_path) }
-                .view()
-    
+                .map { row -> tuple(row.organism_name, row.bam_path) }
+
+    references = GET_REFS(samples)
+
+    if (references.isEmpty()) {
+        log.error "No references found. Exiting."
+        exit 1
+    }
+
+    bam_ch = samples.map { it[1] }
+
+    genomic_ribometric(bam_ch, references)
 }
 
 workflow.onComplete {
