@@ -5,6 +5,8 @@ nextflow.enable.dsl=2
 
 /// Import modules and subworkflows
 include { quality_control } from './subworkflows/local/quality_control.nf'
+include { prepare } from './subworkflows/local/prepare.nf'
+include { genomic_ribometric } from './subworkflows/local/genomic.nf'
 
 // Log the parameters
 log.info """\
@@ -14,9 +16,9 @@ log.info """\
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 ||  Parameters                                                             
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
-||  input_dir   : ${params.input_dir}                                     
-||  outDir      : ${params.output_dir}                                        
-||  workDir     : ${workflow.workDir}                                     
+||  Samples                 : ${params.input_csv}                                     
+||  outDir                  : ${params.output_dir}                                        
+||  Reference Directory     : ${params.reference_dir}                                     
 =+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=+=
 
 """
@@ -38,12 +40,13 @@ def help() {
 
 /// Define the main workflow
 workflow {
-    /// Define the input channels
-    fastq_ch = Channel.fromPath("${params.input_dir}/*.fastq.gz")
-                        .ifEmpty { exit 1, "No fastq files found in ${params.input_dir}" }
-
-    /// Run the subworkflow
-    quality_control(fastq_ch)
+    
+    samples = Channel
+                .fromPath(params.input_csv)
+                .splitCsv(header: true)
+                .map { row -> tuple(organism_name, bam_path) }
+                .view()
+    
 }
 
 workflow.onComplete {

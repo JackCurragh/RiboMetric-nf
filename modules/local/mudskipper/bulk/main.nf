@@ -1,10 +1,11 @@
 
-process MUDSKIPPER {
+process MUDSKIPPER_BULK {
 
     tag 'medium'
 
 	input:
 	    file bam 
+        file bam_index
         path index
 
 	output:

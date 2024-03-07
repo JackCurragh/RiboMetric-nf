@@ -6,7 +6,8 @@ process SAMTOOLS_INDEX {
 	    file bam 
 
 	output:
-	    path "*.bai", emit: index
+	    path("*.bai"), emit: bai
+        path("*.bam", includeInputs: true), emit: bam
 
     script:
         """

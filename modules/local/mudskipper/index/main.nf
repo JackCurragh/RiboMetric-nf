@@ -1,18 +1,19 @@
 
-process MUDSKIPPER {
+process MUDSKIPPER_INDEX {
 
     tag 'medium'
 
-	publishDir "${params.output_dir}/fastqc", mode: 'copy'
+	publishDir "${params.reference_dir}/${organism}", mode: 'copy'
 	
 	input:
-	    file fastq 
+	    file gtf 
+        val organism
 
 	output:
-	    path "*_fastqc.{zip,html}", emit: fastqc_full_reports
+	    path "mudskipper"
 
     script:
         """
-        fastqc -q $fastq 
+        mudskipper index -g ${gtf} -d mudskipper
         """
 }

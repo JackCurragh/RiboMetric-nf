@@ -2,7 +2,7 @@ process RIBOMETRIC_PREPARE {
 
     tag 'medium'
 
-	publishDir "${params.output_dir}/fastqc", mode: 'copy'
+	publishDir "${params.reference_dir}/${organism}", mode: 'copy'
 	
 	input:
 	    file gtf 

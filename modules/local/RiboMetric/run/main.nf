@@ -2,10 +2,10 @@ process RIBOMETRIC_RUN {
 
     tag 'medium'
 
-	publishDir "${params.output_dir}/ribometric", mode: 'copy'
+	publishDir "${params.output_dir}/ribometric/${bam.baseName}", mode: 'copy'
 	
 	input:
-	    file bam 
+	    tuple(bam, bai) 
         file annotation
 
 	output:
