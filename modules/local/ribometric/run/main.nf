@@ -1,8 +1,11 @@
 process RIBOMETRIC_RUN {
 
+    maxForks 5
     tag 'medium'
 
-	publishDir "${params.output_dir}/ribometric/${bam.baseName}", mode: 'copy'
+	publishDir "${params.output_dir}/ribometric/${bam.simpleName}", mode: 'copy'
+
+    errorStrategy 'ignore'
 	
 	input:
         path(bai) 
@@ -17,6 +20,6 @@ process RIBOMETRIC_RUN {
 
     script:
         """
-        RiboMetric run -b ${bam} -a ${annotation} -S 10000000 -T 10000 --all > output.txt
+        RiboMetric run -p 8 -b ${bam} -a ${annotation} -S 10000000 -T 10000 --all > output.txt
         """
 }
